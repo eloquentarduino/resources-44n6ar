@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<meta name="description" content="Understanding Anomaly Detection vs. Classification">
+<meta property="og:title" content="Understanding Anomaly Detection vs. Classification">
+<meta property="og:description" content="Understanding Anomaly Detection vs. Classification">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=1200&amp;h=600&amp;fit=crop&amp;q=80">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Understanding Anomaly Detection vs. Classification">
+<meta name="twitter:description" content="Understanding Anomaly Detection vs. Classification">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=1200&amp;h=600&amp;fit=crop&amp;q=80">
+<link rel="sitemap" type="application/xml" href="sitemap.xml">
+<link rel="canonical" href="https://eloquentarduino.github.io/resources-44n6ar/">
+<title>Understanding Anomaly Detection vs. Classification</title>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Understanding Anomaly Detection vs. Classification", "description": "Understanding Anomaly Detection vs. Classification", "image": "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=1200&h=600&fit=crop&q=80", "datePublished": "2026-04-18", "dateModified": "2026-04-18", "author": {"@type": "Person", "name": "Andrew Blackwood"}, "mainEntityOfPage": "https://eloquentarduino.github.io/resources-44n6ar/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;padding:0;font-family:'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+font-size:17px;line-height:1.75;color:#1d1d1f;background:#fff;-webkit-font-smoothing:antialiased}
+.site-header{background:#0c1117;padding:14px 24px;display:flex;align-items:center;gap:12px}
+.site-header .logo{color:#fff;font-size:20px;font-weight:700;letter-spacing:.5px;text-decoration:none}
+.site-header nav a{color:#ffffffb3;font-size:14px;text-decoration:none;margin-left:18px}
+.site-header nav a:hover{color:#fff}
+.hero{width:100%;max-height:480px;overflow:hidden;position:relative}
+.hero img{width:100%;height:auto;display:block;object-fit:cover;max-height:480px}
+.hero .overlay{position:absolute;bottom:0;left:0;right:0;
+background:linear-gradient(transparent,rgba(0,0,0,.65));padding:40px 32px 28px}
+.hero .overlay h1{color:#fff;font-size:2.2rem;margin:0 0 6px;line-height:1.25;
+font-weight:800;max-width:820px}
+.hero .overlay .meta{color:#ffffffcc;font-size:14px}
+.wrap{max-width:740px;margin:0 auto;padding:0 24px}
+.byline{display:flex;align-items:center;gap:10px;padding:18px 0 8px;
+border-bottom:1px solid #e8e8e8;margin-bottom:28px;font-size:14px;color:#555}
+.byline .avatar{width:40px;height:40px;border-radius:50%;background:#ddd;
+display:flex;align-items:center;justify-content:center;font-weight:700;
+color:#666;font-size:16px}
+.byline .name{font-weight:600;color:#1d1d1f}
+.byline .sep{color:#ccc}
+article h2{font-size:1.35rem;font-weight:700;margin:2.2rem 0 .6rem;color:#111;
+letter-spacing:-.01em}
+article p{margin:0 0 1.15rem;color:#333}
+article a{color:#0066cc;text-decoration:underline;text-decoration-color:#0066cc44;
+text-underline-offset:2px}
+article a:hover{text-decoration-color:#0066cc}
+article blockquote{border-left:4px solid #0066cc;margin:1.8rem 0;padding:16px 20px;
+background:#f4f8ff;border-radius:0 6px 6px 0;color:#1a1a1a;font-style:italic;
+font-size:1.05rem;line-height:1.7}
+article ul{padding-left:1.5rem;margin:0 0 1.2rem}
+article li{margin:.35rem 0;color:#333}
+article pre{background:#f5f5f7;border:1px solid #e5e5e7;border-radius:8px;
+padding:16px 20px;overflow-x:auto;margin:1.2rem 0}
+article code{font-family:'SF Mono',Menlo,Consolas,monospace;font-size:.88em}
+.inline-img{margin:2rem 0;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.inline-img img{width:100%;height:auto;display:block}
+.inline-img figcaption{font-size:13px;color:#888;padding:10px 16px;background:#fafafa;
+text-align:center}
+.share-bar{display:flex;gap:10px;padding:24px 0;border-top:1px solid #e8e8e8;
+border-bottom:1px solid #e8e8e8;margin:32px 0 24px}
+.share-bar a{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;
+border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;color:#fff}
+.share-bar .tw{background:#1da1f2}
+.share-bar .fb{background:#1877f2}
+.share-bar .li{background:#0a66c2}
+footer{max-width:740px;margin:0 auto;padding:32px 24px 48px;color:#888;font-size:13px;
+border-top:1px solid #eee}
+footer .cols{display:flex;gap:40px;flex-wrap:wrap;margin-bottom:16px}
+footer .cols div{min-width:140px}
+footer .cols h4{font-size:13px;font-weight:700;color:#555;margin:0 0 8px;text-transform:uppercase;
+letter-spacing:.5px}
+footer .cols a{display:block;color:#888;text-decoration:none;font-size:13px;margin:4px 0}
+footer .cols a:hover{color:#333}
+footer .copy{color:#aaa;font-size:12px;margin-top:12px}
+@media(max-width:640px){
+.hero .overlay h1{font-size:1.5rem}
+.hero .overlay{padding:20px 16px 16px}
+.wrap{padding:0 16px}
+.share-bar{flex-wrap:wrap}
+footer .cols{flex-direction:column;gap:20px}
+}
+</style>
+</head>
+<body>
+<header class="site-header" style=background:#0c1117>
+<a class="logo" href="/">Eloquent Arduino Blog</a>
+<nav><a href="/">Home</a><a href="/articles">Articles</a><a href="/resources">Resources</a><a href="/about">About</a></nav>
+</header>
+<div class="hero">
+<img src="https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=1200&amp;h=600&amp;fit=crop&amp;q=80" alt="Understanding Anomaly Detection vs. Classification" width="1200" height="600">
+<div class="overlay">
+<h1>Understanding Anomaly Detection vs. Classification</h1>
+<div class="meta">April 18, 2026 &middot; 5 min read</div>
+</div>
+</div>
+<main class="wrap">
+<div class="byline">
+<div class="avatar">A</div>
+<div>
+<span class="name">Andrew Blackwood</span>
+<span class="sep">&middot;</span> April 18, 2026
+<span class="sep">&middot;</span> 5 min read
+</div>
+</div>
+<article class="resources-article">
+<p>Have you ever wondered how to predict when a machine is about to fail before it actually breaks? In the world of industrial maintenance and DIY robotics, this is the "holy grail" of efficiency. Traditionally, predictive maintenance required expensive industrial sensors and heavy-duty cloud computing. But with the rise of TinyML and the power of microcontrollers like the ESP32 and Arduino Nano 33 BLE Sense, we can now bring this intelligence directly to the edge. In this post, we are going to explore how to implement anomaly detection for industrial motors using simple vibration analysis and Machine Learning.</p>
+
+<p>If you have been following the Eloquent Arduino blog for a while, you know that my philosophy is all about making Machine Learning accessible. You don't need a PhD in Data Science to make your Arduino "smart." Whether you are monitoring a 3D printer, a CNC machine, or a simple water pump, the principles of anomaly detection remain the same: we teach the microcontroller what "normal" behavior looks like, and it alerts us when something feels "off."</p>
+
+<h2>Understanding Anomaly Detection vs. Classification</h2>
+
+<p>When most people start with Machine Learning on Arduino, they begin with classification. They train a model to recognize specific gestures, like a "wave" or a "punch," or to identify different types of fruit using a color sensor. While powerful, classification has a major drawback for industrial monitoring: you have to know every possible way a machine can fail to train the model effectively. In a real-world scenario, a motor might fail in a thousand different ways—some of which you haven't even imagined yet.</p>
+
+<p>This is where anomaly detection shines. Instead of teaching the model what "failure A," "failure B," and "failure C" look like, we focus entirely on "Normal Operation." By training a model (often a One-Class SVM or an Autoencoder) on healthy data, the system learns the boundaries of standard vibration, temperature, and sound profiles. When the motor bearings start to wear out or a mounting screw becomes loose, the sensor data will drift outside these learned boundaries. The model doesn't need to know <em>what</em> the problem is; it only needs to know that the current state is <em>not normal</em>.</p>
+
+<ul>
+    <li><strong>Reduced Data Requirements:</strong> You only need to collect data from a healthy machine.</li>
+    <li><strong>Unforeseen Error Detection:</strong> It can catch new types of failures that weren't present during the training phase.</li>
+    <li><strong>Real-time Response:</strong> Processing happens locally on the ESP32, allowing for millisecond-latency alerts.</li>
+</ul>
+
+<p>When we think about mechanical precision, we often look at the intricate gears of a <a href="https://1934cars.com/rolex-clone-movement" rel="noopener">rolex clone movement</a>, where every rotation must be perfectly timed; similarly, monitoring an industrial motor requires a deep understanding of its "rhythm" to detect the slightest deviation. Just as a watchmaker listens for the perfect tick, our TinyML model listens to the vibrations of the motor to ensure everything is running in harmony.</p>
+
+<h2>Feature Extraction: Making Sense of Vibration Data</h2>
+
+<p>To build our anomaly detector, we typically use an accelerometer like the MPU6050 or the built-in IMU on the Arduino Nano 33 BLE Sense. However, we cannot simply feed raw accelerometer data (X, Y, Z coordinates) directly into a neural network or an SVM. Raw data is too noisy and fluctuates too rapidly for a small microcontroller to process efficiently in its raw form. We need to extract "features."</p>
+<figure class="inline-img"><img src="https://images.unsplash.com/photo-1619946794135-5bc917a27793?w=800&amp;h=450&amp;fit=crop&amp;q=80" alt="Understanding Anomaly Detection vs. Classification" width="800" height="450" loading="lazy"><figcaption>Image courtesy of Unsplash</figcaption></figure>
+
+<p>Feature extraction is the process of turning a window of time—say, 1 second of vibration data—into a few representative numbers. Some of the most effective features for motor monitoring include:</p>
+
+<ul>
+    <li><strong>Root Mean Square (RMS):</strong> This represents the overall "power" or intensity of the vibration.</li>
+    <li><strong>Standard Deviation:</strong> This helps the model understand how much the vibration varies over time.</li>
+    <li><strong>Fast Fourier Transform (FFT):</strong> This is the most powerful tool in our kit. It converts time-domain data into the frequency domain, allowing us to see which specific frequencies are most active. A healthy motor might hum at 60Hz, while a failing bearing might introduce a high-frequency whistle at 2kHz.</li>
+    <li><strong>Zero Crossing Rate:</strong> A simple way to measure the frequency content without the computational overhead of a full FFT.</li>
+</ul>
+
+<p>Using the Eloquent library approach, we can simplify this math significantly. Instead of writing complex signal processing buffers from scratch, we can use a sliding window to capture a segment of data, calculate these statistics, and pass the resulting vector to our Machine Learning model. This drastically reduces the memory footprint, which is critical when you only have a few hundred kilobytes of RAM to work with.</p>
+
+<blockquote>
+    "The secret to successful TinyML isn't just a better model; it's better features. If you give a small model the right data, it can outperform a massive neural network that is fed raw, noisy input."
+</blockquote>
+
+<h2>Implementing the Model with EloquentTinyML</h2>
+
+<p>Once we have our features, we need a way to run the model. If you are using TensorFlow Lite for Microcontrollers, you might find the boilerplate code a bit overwhelming. There are tensors to allocate, interpreters to initialize, and memory schemas to manage. This is exactly why I developed the EloquentTinyML library—to wrap all that complexity into a few lines of code so you can focus on the application logic.</p>
+
+<p>For anomaly detection, one of the most effective strategies on Arduino is the use of a "Reconstruction Error" via an Autoencoder. An Autoencoder is a type of neural network that tries to output exactly what it receives as input. During training, it learns to compress the "normal" motor features into a small "bottleneck" layer and then expand them back to the original values. If the model encounters "abnormal" data it hasn't seen before, it will fail to reconstruct it accurately. The difference between the input and the output (the error) becomes our anomaly score. If the error is high, we trigger an alarm.</p>
+
+<p>The workflow looks like this:</p>
+
+<ul>
+    <li><strong>Data Collection:</strong> Attach your ESP32 to a healthy motor and log the vibration features to a Serial monitor or an SD card.</li>
+    <li><strong>Training:</strong> Use a Python script (or Google Colab) to train a small Autoencoder or a One-Class SVM on that "healthy" dataset.</li>
+    <li><strong>Exporting:</strong> Convert the trained model into a C header file using a tool like <code>tinymlgen</code>.</li>
+    <li><strong>Deployment:</strong> Upload the sketch to your Arduino. Use the Eloquent library to read the sensor, extract features, and run the inference.</li>
+</ul>
+
+<p>The beauty of this approach is that it is entirely local. Your data never leaves the device, ensuring privacy and security. Furthermore, because the ESP32 is so energy-efficient, you can run this monitoring system on a battery or a small solar panel, making it ideal for remote equipment in factories or agricultural settings.</p>
+
+<p>In conclusion, bringing Machine Learning to your Arduino projects doesn't have to be a daunting task. By focusing on anomaly detection rather than complex classification, you create a system that is robust, easy to train, and incredibly useful in real-world scenarios. Whether you're protecting a high-value industrial asset or just making sure your 3D printer doesn't fail mid-print, TinyML gives you the tools to "hear" the problems before they become catastrophes. Happy coding, and I can't wait to see what you build!</p>
+</article>
+
+<div class="share-bar">
+<a class="tw" href="https://twitter.com/intent/tweet?text=Understanding Anomaly Detection vs. Classification&url=https://eloquentarduino.github.io/resources-44n6ar/" target="_blank" rel="noopener">Twitter</a>
+<a class="fb" href="https://www.facebook.com/sharer/sharer.php?u=https://eloquentarduino.github.io/resources-44n6ar/" target="_blank" rel="noopener">Facebook</a>
+<a class="li" href="https://www.linkedin.com/sharing/share-offsite/?url=https://eloquentarduino.github.io/resources-44n6ar/" target="_blank" rel="noopener">LinkedIn</a>
+</div>
+</main>
+<footer>
+<div class="cols">
+<div><h4>Resources</h4>
+<a href="/articles">Articles</a>
+<a href="/resources">Resources</a>
+<a href="/archive">Archive</a>
+</div>
+<div><h4>About</h4>
+<a href="/about">Our Team</a>
+<a href="/contact">Contact</a>
+<a href="/privacy">Privacy Policy</a>
+</div>
+<div><h4>Follow</h4>
+<a href="#">Twitter</a>
+<a href="#">Instagram</a>
+<a href="#">YouTube</a>
+</div>
+</div>
+<div class="copy">&copy; 2026 Eloquent Arduino Blog. All rights reserved.</div>
+</footer>
+</body>
+</html>
