@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://eloquentarduino.github.io/resources-44n6ar/sitemap.xml
